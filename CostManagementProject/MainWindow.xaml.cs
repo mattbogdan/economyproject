@@ -161,42 +161,7 @@ namespace CostManagementProject
             var calcsList = new TestModule().Run(YearStats.ToList());
             calcsList.RemoveAt(0);
 
-
-            List<double> y = new List<double>();
-            foreach (var year in YearStats)
-            {
-                y.Add(year.Cost);
-            }
-
-            var xVal = Enumerable.Range((int)YearStats.First().Year, YearStats.Count).ToList();
-
-            // Create data sources:
-            var xDataSource = xVal.AsXDataSource();
-            var yDataSource = y.AsYDataSource();
-
-            yDataSource.SetYMapping(Y => Y);
-            xDataSource.SetXMapping(X => X);
-
-            yDataSource.AddMapping(ShapeElementPointMarker.ToolTipTextProperty,
-               Y => string.Format("Собівартість - {0}", Y));
-
-            // plotter.Viewport.Restrictions.Add(new PhysicalProportionsRestriction { ProportionRatio = 1 });
-
-
-            //CompositeDataSource 
-            CompositeDataSource compositeDataSource = new CompositeDataSource(xDataSource, yDataSource);
-            //xDataSource.Join(yDataSource);
-            // adding graph to plotter
-            plotter.AddLineGraph(compositeDataSource,
-                new Pen(Brushes.Goldenrod, 3),
-                new SampleMarker(),
-                new PenDescription("Чст."));
-
-            plotter.Legend.Visibility = System.Windows.Visibility.Collapsed;
-            // Force evertyhing plotted to be visible
-            plotter.FitToView();
-            plotter.InvalidateVisual();
-
+            GenerateCostGraph();
 
 
             foreach (YearGrowthCriteries year in calcsList)
@@ -266,6 +231,44 @@ namespace CostManagementProject
                 ScaleStats.Add(tempScale);
             }
 
+        }
+
+        private void GenerateCostGraph()
+        {
+            List<double> y = new List<double>();
+            foreach (var year in YearStats)
+            {
+                y.Add(year.Cost);
+            }
+
+            var xVal = Enumerable.Range((int)YearStats.First().Year, YearStats.Count).ToList();
+
+            // Create data sources:
+            var xDataSource = xVal.AsXDataSource();
+            var yDataSource = y.AsYDataSource();
+
+            yDataSource.SetYMapping(Y => Y);
+            xDataSource.SetXMapping(X => X);
+
+            yDataSource.AddMapping(ShapeElementPointMarker.ToolTipTextProperty,
+               Y => string.Format("Собівартість - {0}", Y));
+
+            // plotter.Viewport.Restrictions.Add(new PhysicalProportionsRestriction { ProportionRatio = 1 });
+
+
+            //CompositeDataSource 
+            CompositeDataSource compositeDataSource = new CompositeDataSource(xDataSource, yDataSource);
+            //xDataSource.Join(yDataSource);
+            // adding graph to plotter
+            plotter.AddLineGraph(compositeDataSource,
+                new Pen(Brushes.Goldenrod, 3),
+                new SampleMarker(),
+                new PenDescription("Чст."));
+
+            plotter.Legend.Visibility = System.Windows.Visibility.Collapsed;
+            // Force evertyhing plotted to be visible
+            plotter.FitToView();
+            plotter.InvalidateVisual();
         }
     }
 }
