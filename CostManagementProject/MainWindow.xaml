@@ -36,6 +36,7 @@
                         <Button Height="20" Width="20" Click="SubButtonClick" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">-</Button>
                         <Button Height="20" Margin="4,0,4,0" Click="ClearButtonClick">Очистити</Button>
                         <Button Height="20" Margin="0,0,4,0" Click="CalculateButtonClick">Розрахувати</Button>
+                        <Button Height="20" Margin="0,0,4,0" Click="ExportToExcelButtonClick" IsEnabled="False" Name="ExportToExcelButton">Експорт в Excel</Button>
                     </StackPanel>
                     <DataGrid Grid.Row="1" Name="YearGrowthGrid"
                               RowHeight="75"
