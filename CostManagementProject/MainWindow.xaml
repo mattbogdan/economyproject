@@ -1,0 +1,378 @@
+﻿<Controls:MetroWindow x:Class="CostManagementProject.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:d3="http://research.microsoft.com/DynamicDataDisplay/1.0"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:local="clr-namespace:CostManagementProject"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        mc:Ignorable="d"
+        Title="Діагностика розвитку підприємства" Height="400" Width="825"
+        TextOptions.TextFormattingMode="Display">
+    <Controls:MetroWindow.Resources>
+        <Style x:Key="MenuLevel2" BasedOn="{StaticResource MetroTabItem}" TargetType="{x:Type TabItem}">
+            <Setter Property="Controls:ControlsHelper.HeaderFontSize" Value="18"></Setter>
+        </Style>
+    </Controls:MetroWindow.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <TabControl >
+            <TabItem Header="Основні індикатори" Style="{StaticResource MenuLevel2}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="25" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Margin="5,0,5,0">Кількість років</Label>
+                        <Label Margin="0,0,5,0" Name="ElementsCountLabel" Content="{Binding YearsCount}"></Label>
+                        <Button Height="20" Width="20" Click="AddButtonClick" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">+</Button>
+                        <Button Height="20" Width="20" Click="SubButtonClick" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">-</Button>
+                        <Button Height="20" Margin="4,0,4,0" Click="ClearButtonClick">Очистити</Button>
+                        <Button Height="20" Margin="0,0,4,0" Click="CalculateButtonClick">Розрахувати</Button>
+                    </StackPanel>
+                    <DataGrid Grid.Row="1" Name="YearGrowthGrid"
+                              RowHeight="75"
+                              AutoGenerateColumns="False">
+                        <DataGrid.LayoutTransform>
+                            <TransformGroup>
+                                <RotateTransform Angle="90" />
+                                <MatrixTransform Matrix="-1,0,0,1,0,0"/>
+                            </TransformGroup>
+                        </DataGrid.LayoutTransform>
+                        <DataGrid.ColumnHeaderStyle>
+                            <Style TargetType="{x:Type DataGridColumnHeader}" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
+                                <Setter Property="LayoutTransform">
+                                    <Setter.Value>
+                                        <TransformGroup>
+                                            <RotateTransform Angle="-90"/>
+                                            <ScaleTransform ScaleX="1" ScaleY="-1" />
+                                        </TransformGroup>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </DataGrid.ColumnHeaderStyle>
+                        <DataGrid.CellStyle>
+                            <Style  TargetType="DataGridCell">
+                                <Setter Property="LayoutTransform">
+                                    <Setter.Value>
+                                        <TransformGroup>
+                                            <RotateTransform Angle="-90"/>
+                                            <ScaleTransform ScaleX="1" ScaleY="-1" />
+                                        </TransformGroup>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type DataGridCell}">
+                                            <Grid Background="{TemplateBinding Background}">
+                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                            </Grid>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </DataGrid.CellStyle>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Рік" Binding="{Binding Year}"/>
+                            <DataGridTextColumn Header="Чистий прибуток\збиток" Binding="{Binding NetProfit}" />
+                            <DataGridTextColumn Header="Чистий дохід від реалізації" Binding="{Binding SalesNetIncome}" />
+                            <DataGridTextColumn Header="Собівартість" Binding="{Binding Cost}" />
+                            <DataGridTextColumn Header="Середньорічна вартість активів" Binding="{Binding AverageAssets}" />
+                            <DataGridTextColumn Header="Середньорічна вартість основних засобів" Binding="{Binding AverageFixedAssets}" />
+                            <DataGridTextColumn Header="Середньорічна вартість оборотних активів" Binding="{Binding AverageCurrentAssets}" />
+                            <DataGridTextColumn Header="Середньоспискова чисельність працівників" Binding="{Binding EmployeeCount}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Темпи зростання" Style="{StaticResource MenuLevel2}">
+                <DataGrid Name="YearGrowthCriteriaGrid"
+                          RowHeight="75"
+                              AutoGenerateColumns="False">
+                    <DataGrid.LayoutTransform>
+                        <TransformGroup>
+                            <RotateTransform Angle="90" />
+                            <MatrixTransform Matrix="-1,0,0,1,0,0"/>
+                        </TransformGroup>
+                    </DataGrid.LayoutTransform>
+                    <DataGrid.ColumnHeaderStyle>
+                        <Style TargetType="{x:Type DataGridColumnHeader}" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
+                            <Setter Property="LayoutTransform">
+                                <Setter.Value>
+                                    <TransformGroup>
+                                        <RotateTransform Angle="-90"/>
+                                        <ScaleTransform ScaleX="1" ScaleY="-1" />
+                                    </TransformGroup>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </DataGrid.ColumnHeaderStyle>
+                    <DataGrid.CellStyle>
+                        <Style  TargetType="DataGridCell">
+                            <Setter Property="LayoutTransform">
+                                <Setter.Value>
+                                    <TransformGroup>
+                                        <RotateTransform Angle="-90"/>
+                                        <ScaleTransform ScaleX="1" ScaleY="-1" />
+                                    </TransformGroup>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type DataGridCell}">
+                                        <Grid Background="{TemplateBinding Background}">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                        </Grid>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </DataGrid.CellStyle>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Рік" IsReadOnly="True" Binding="{Binding Year}"/>
+                        <DataGridTextColumn Header="Чистий прибуток\збиток" IsReadOnly="True" Binding="{Binding NetProfit}" />
+                        <DataGridTextColumn Header="Чистий дохід від реалізації" IsReadOnly="True" Binding="{Binding SalesNetIncome}" />
+                        <DataGridTextColumn Header="Собівартість" IsReadOnly="True" Binding="{Binding Cost}" />
+                        <DataGridTextColumn Header="Середньорічна вартість активів" IsReadOnly="True" Binding="{Binding AverageAssets}" />
+                        <DataGridTextColumn Header="Середньорічна вартість основних засобів" IsReadOnly="True" Binding="{Binding AverageFixedAssets}" />
+                        <DataGridTextColumn Header="Середньорічна вартість оборотних активів" IsReadOnly="True" Binding="{Binding AverageCurrentAssets}" />
+                        <DataGridTextColumn Header="Середньоспискова чисельність працівників" IsReadOnly="True" Binding="{Binding EmployeeCount}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+
+            <TabItem Header="Рейтингова оцінка темпів зростання" Style="{StaticResource MenuLevel2}">
+                <DataGrid Name="YearGrowthRateGrid"
+                          RowHeight="75"
+                              AutoGenerateColumns="False">
+                    <DataGrid.LayoutTransform>
+                        <TransformGroup>
+                            <RotateTransform Angle="90" />
+                            <MatrixTransform Matrix="-1,0,0,1,0,0"/>
+                        </TransformGroup>
+                    </DataGrid.LayoutTransform>
+                    <DataGrid.ColumnHeaderStyle>
+                        <Style TargetType="{x:Type DataGridColumnHeader}" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
+                            <Setter Property="LayoutTransform">
+                                <Setter.Value>
+                                    <TransformGroup>
+                                        <RotateTransform Angle="-90"/>
+                                        <ScaleTransform ScaleX="1" ScaleY="-1" />
+                                    </TransformGroup>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </DataGrid.ColumnHeaderStyle>
+                    <DataGrid.CellStyle>
+                        <Style  TargetType="DataGridCell">
+                            <Setter Property="LayoutTransform">
+                                <Setter.Value>
+                                    <TransformGroup>
+                                        <RotateTransform Angle="-90"/>
+                                        <ScaleTransform ScaleX="1" ScaleY="-1" />
+                                    </TransformGroup>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type DataGridCell}">
+                                        <Grid Background="{TemplateBinding Background}">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                        </Grid>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </DataGrid.CellStyle>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Рік" IsReadOnly="True" Binding="{Binding Year}"/>
+                        <DataGridTextColumn Header="Чистий прибуток\збиток" IsReadOnly="True" Binding="{Binding NetProfit}" />
+                        <DataGridTextColumn Header="Чистий дохід від реалізації" IsReadOnly="True" Binding="{Binding SalesNetIncome}" />
+                        <DataGridTextColumn Header="Собівартість" IsReadOnly="True" Binding="{Binding Cost}" />
+                        <DataGridTextColumn Header="Середньорічна вартість активів" IsReadOnly="True" Binding="{Binding AverageAssets}" />
+                        <DataGridTextColumn Header="Середньорічна вартість основних засобів" IsReadOnly="True" Binding="{Binding AverageFixedAssets}" />
+                        <DataGridTextColumn Header="Середньорічна вартість оборотних активів" IsReadOnly="True" Binding="{Binding AverageCurrentAssets}" />
+                        <DataGridTextColumn Header="Середньоспискова чисельність працівників" IsReadOnly="True" Binding="{Binding EmployeeCount}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+
+            <TabItem Header="Рангові відхилення та кореляція Спірмана" Style="{StaticResource MenuLevel2}">
+                <DataGrid Name="YearSpirmanGrid"
+                          RowHeight="75"
+                              AutoGenerateColumns="False">
+                    <DataGrid.LayoutTransform>
+                        <TransformGroup>
+                            <RotateTransform Angle="90" />
+                            <MatrixTransform Matrix="-1,0,0,1,0,0"/>
+                        </TransformGroup>
+                    </DataGrid.LayoutTransform>
+                    <DataGrid.ColumnHeaderStyle>
+                        <Style TargetType="{x:Type DataGridColumnHeader}" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
+                            <Setter Property="LayoutTransform">
+                                <Setter.Value>
+                                    <TransformGroup>
+                                        <RotateTransform Angle="-90"/>
+                                        <ScaleTransform ScaleX="1" ScaleY="-1" />
+                                    </TransformGroup>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </DataGrid.ColumnHeaderStyle>
+                    <DataGrid.CellStyle>
+                        <Style  TargetType="DataGridCell">
+                            <Setter Property="LayoutTransform">
+                                <Setter.Value>
+                                    <TransformGroup>
+                                        <RotateTransform Angle="-90"/>
+                                        <ScaleTransform ScaleX="1" ScaleY="-1" />
+                                    </TransformGroup>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type DataGridCell}">
+                                        <Grid Background="{TemplateBinding Background}">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                        </Grid>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </DataGrid.CellStyle>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Рік" IsReadOnly="True" Binding="{Binding Year}"/>
+                        <DataGridTextColumn Header="Чистий прибуток\збиток" IsReadOnly="True" Binding="{Binding NetProfit}" />
+                        <DataGridTextColumn Header="Чистий дохід від реалізації" IsReadOnly="True" Binding="{Binding SalesNetIncome}" />
+                        <DataGridTextColumn Header="Собівартість" IsReadOnly="True" Binding="{Binding Cost}" />
+                        <DataGridTextColumn Header="Середньорічна вартість активів" IsReadOnly="True" Binding="{Binding AverageAssets}" />
+                        <DataGridTextColumn Header="Середньорічна вартість основних засобів" IsReadOnly="True" Binding="{Binding AverageFixedAssets}" />
+                        <DataGridTextColumn Header="Середньорічна вартість оборотних активів" IsReadOnly="True" Binding="{Binding AverageCurrentAssets}" />
+                        <DataGridTextColumn Header="Середньоспискова чисельність працівників" IsReadOnly="True" Binding="{Binding EmployeeCount}" />
+                        <DataGridTextColumn Header="Сума квадратів рангових відхилень" IsReadOnly="True" Binding="{Binding DeviationSum}"/>
+                        <DataGridTextColumn Header="Коефіцієнт рангової кореляції Спірмана" IsReadOnly="True" Binding="{Binding SpiermanCoef}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+
+            <TabItem Header="Коефіцієнти збігів Фехнера" Style="{StaticResource MenuLevel2}">
+                <DataGrid Name="FehnerGrid"
+                          RowHeight="75"
+                              AutoGenerateColumns="False">
+                    <DataGrid.LayoutTransform>
+                        <TransformGroup>
+                            <RotateTransform Angle="90" />
+                            <MatrixTransform Matrix="-1,0,0,1,0,0"/>
+                        </TransformGroup>
+                    </DataGrid.LayoutTransform>
+                    <DataGrid.ColumnHeaderStyle>
+                        <Style TargetType="{x:Type DataGridColumnHeader}" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
+                            <Setter Property="LayoutTransform">
+                                <Setter.Value>
+                                    <TransformGroup>
+                                        <RotateTransform Angle="-90"/>
+                                        <ScaleTransform ScaleX="1" ScaleY="-1" />
+                                    </TransformGroup>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </DataGrid.ColumnHeaderStyle>
+                    <DataGrid.CellStyle>
+                        <Style  TargetType="DataGridCell">
+                            <Setter Property="LayoutTransform">
+                                <Setter.Value>
+                                    <TransformGroup>
+                                        <RotateTransform Angle="-90"/>
+                                        <ScaleTransform ScaleX="1" ScaleY="-1" />
+                                    </TransformGroup>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type DataGridCell}">
+                                        <Grid Background="{TemplateBinding Background}">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                        </Grid>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </DataGrid.CellStyle>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Рік" IsReadOnly="True" Binding="{Binding Year}"/>
+                        <DataGridTextColumn Header="Чистий прибуток // Середньорічна вартість оборотних активів" IsReadOnly="True" Binding="{Binding First}" />
+                        <DataGridTextColumn Header="Чистий прибуток // Чистий дохід від реалізації" IsReadOnly="True" Binding="{Binding Second}" />
+                        <DataGridTextColumn Header="Чистий прибуток // Середньорічна вартість активів" IsReadOnly="True" Binding="{Binding Third}" />
+                        <DataGridTextColumn Header="Чистий прибуток // Середньорічна вартість основних засобів" IsReadOnly="True" Binding="{Binding Fourth}" />
+                        <DataGridTextColumn Header="Чистий прибуток // Собівартість" IsReadOnly="True" Binding="{Binding Fifth}" />
+                        <DataGridTextColumn Header="Чистий прибуток // Середньоспискова чисельність працівників" IsReadOnly="True" Binding="{Binding Sixth}" />
+                        <DataGridTextColumn Header="Середньорічна вартість оборотних активів // Чистий дохід від реалізації" IsReadOnly="True" Binding="{Binding Seventh}" />
+                        <DataGridTextColumn Header="Середньорічна вартість оборотних активів // Середньорічна вартість активів" IsReadOnly="True" Binding="{Binding Eighth}"/>
+                        <DataGridTextColumn Header="Середньорічна вартість оборотних активів // Середньорічна вартість основних засобів" IsReadOnly="True" Binding="{Binding Ninth}"/>
+                        <DataGridTextColumn Header="Середньорічна вартість оборотних активів // Собівартість" IsReadOnly="True" Binding="{Binding Tenth}"/>
+                        <DataGridTextColumn Header="Середньорічна вартість оборотних активів // Середньоспискова чисельність працівників" IsReadOnly="True" Binding="{Binding Eleventh}"/>
+                        <DataGridTextColumn Header="Чистий дохід від реалізації // Середньорічна вартість активів" IsReadOnly="True" Binding="{Binding Twelfth}"/>
+                        <DataGridTextColumn Header="Чистий дохід від реалізації // Середньорічна вартість основних засобів" IsReadOnly="True" Binding="{Binding Thirteenth}"/>
+                        <DataGridTextColumn Header="Чистий дохід від реалізації // Собівартість" IsReadOnly="True" Binding="{Binding Fourteenth}"/>
+                        <DataGridTextColumn Header="Чистий дохід від реалізації // Середньоспискова чисельність працівників" IsReadOnly="True" Binding="{Binding Fifteenth}"/>
+                        <DataGridTextColumn Header="Середньорічна вартість активів // Середньорічна вартість основних засобів" IsReadOnly="True" Binding="{Binding Sixteenth}"/>
+                        <DataGridTextColumn Header="Середньорічна вартість активів // Собівартість" IsReadOnly="True" Binding="{Binding Seventeenth}"/>
+                        <DataGridTextColumn Header="Середньорічна вартість активів // Середньоспискова чисельність праці-вників" IsReadOnly="True" Binding="{Binding Eighteenth}"/>
+                        <DataGridTextColumn Header="Середньорічна вартість основних засобів // Собівартість" IsReadOnly="True" Binding="{Binding Nineteenth}"/>
+                        <DataGridTextColumn Header="Середньорічна вартість основних засобів // Середньоспискова чисельність працівників" IsReadOnly="True" Binding="{Binding Twentieth}"/>
+                        <DataGridTextColumn Header="Собівартість // Середньоспискова чисельність працівників" IsReadOnly="True" Binding="{Binding TwentyFirst}"/>
+                        <DataGridTextColumn Header="Сума позитивних і негативних співвідношень між рангами" IsReadOnly="True" Binding="{Binding RangSum}"/>
+                        <DataGridTextColumn Header="Коефіцієнт збігів Фехнера" IsReadOnly="True" Binding="{Binding FahnerCoef}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+
+            <TabItem Header="Рівні масштабності розвитку" Style="{StaticResource MenuLevel2}">
+                <DataGrid   Name="ScaleRateGrid"                      
+                           AutoGenerateColumns="False">
+                    <DataGrid.CellStyle>
+                        <Style  TargetType="DataGridCell">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type DataGridCell}">
+                                        <Grid Background="{TemplateBinding Background}">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                        </Grid>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </DataGrid.CellStyle>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Аналізовані періоди, роки" IsReadOnly="True" Binding="{Binding Year}"/>
+                        <DataGridTextColumn Header="Коефіцієнт Спірмана" IsReadOnly="True" Binding="{Binding SpirmanCoef}" />
+                        <DataGridTextColumn Header="Коефіцієнт Фехнера" IsReadOnly="True" Binding="{Binding FehnerCoef}" />
+                        <DataGridTextColumn Header="Рівень масштабності підприємства" IsReadOnly="True" Binding="{Binding ScaleRate}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+
+            <TabItem Header="Графіки" Style="{StaticResource MenuLevel2}">
+
+                <Grid Background="#FFE5E5E5" Margin="-3,-1,12,0.8">
+                    <d3:ChartPlotter x:Name="plotter">
+                        <d3:Header TextBlock.FontSize="15" Content="Полігон частот"/>
+                        <d3:VerticalAxisTitle Content="Частота"/>
+                        <d3:HorizontalAxisTitle Content="Величина"/>
+                    </d3:ChartPlotter>
+                </Grid>
+            </TabItem>
+
+        </TabControl>
+
+        
+    </Grid>
+</Controls:MetroWindow>
