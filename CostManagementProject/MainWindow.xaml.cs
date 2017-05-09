@@ -165,21 +165,20 @@ namespace CostManagementProject
             List<double> y = new List<double>();
             foreach (var year in YearStats)
             {
-                y.Add(year.AverageCurrentAssets);
+                y.Add(year.Cost);
             }
 
-            var xVal = Enumerable.Range((int)YearStats.First().Year, (int)YearStats.Last().Year);
+            var xVal = Enumerable.Range((int)YearStats.First().Year, YearStats.Count).ToList();
 
             // Create data sources:
             var xDataSource = xVal.AsXDataSource();
             var yDataSource = y.AsYDataSource();
 
             yDataSource.SetYMapping(Y => Y);
-
-
             xDataSource.SetXMapping(X => X);
-            xDataSource.AddMapping(ShapeElementPointMarker.ToolTipTextProperty,
-               X => string.Format("Значення - {0}", X));
+
+            yDataSource.AddMapping(ShapeElementPointMarker.ToolTipTextProperty,
+               Y => string.Format("Собівартість - {0}", Y));
 
             // plotter.Viewport.Restrictions.Add(new PhysicalProportionsRestriction { ProportionRatio = 1 });
 
