@@ -1,4 +1,4 @@
-﻿<Controls:MetroWindow x:Class="CostManagementProject.MainWindow"
+﻿<Window x:Class="CostManagementProject.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -8,13 +8,16 @@
         xmlns:local="clr-namespace:CostManagementProject"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
-        Title="Діагностика розвитку підприємства" Height="400" Width="825"
+        Title="Діагностика розвитку підприємства" Height="650" Width="1100"
         TextOptions.TextFormattingMode="Display">
-    <Controls:MetroWindow.Resources>
-        <Style x:Key="MenuLevel2" BasedOn="{StaticResource MetroTabItem}" TargetType="{x:Type TabItem}">
-            <Setter Property="Controls:ControlsHelper.HeaderFontSize" Value="18"></Setter>
+    <Window.Resources>
+        <Style x:Key="MenuLevel1" BasedOn="{StaticResource MetroTabItem}" TargetType="{x:Type TabItem}">
+            <Setter Property="Controls:ControlsHelper.HeaderFontSize" Value="14"></Setter>
         </Style>
-    </Controls:MetroWindow.Resources>
+        <Style x:Key="MenuLevel2">
+            
+        </Style>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -22,7 +25,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <TabControl >
+        <TabControl TabStripPlacement="Left">
             <TabItem Header="Основні індикатори" Style="{StaticResource MenuLevel2}">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -32,10 +35,10 @@
                     <StackPanel Orientation="Horizontal">
                         <Label Margin="5,0,5,0">Кількість років</Label>
                         <Label Margin="0,0,5,0" Name="ElementsCountLabel" Content="{Binding YearsCount}"></Label>
-                        <Button Height="20" Width="20" Click="AddButtonClick" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">+</Button>
-                        <Button Height="20" Width="20" Click="SubButtonClick" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">-</Button>
-                        <Button Height="20" Margin="4,0,4,0" Click="ClearButtonClick">Очистити</Button>
-                        <Button Height="20" Margin="0,0,4,0" Click="CalculateButtonClick">Розрахувати</Button>
+                        <Button Height="20" Width="20" Click="AddButtonClick" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="LightSkyBlue">+</Button>
+                        <Button Height="20" Width="20" Click="SubButtonClick" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="LightSkyBlue">-</Button>
+                        <Button Height="20" Margin="4,0,4,0" Click="ClearButtonClick" Background="Tomato">Очистити</Button>
+                        <Button Height="20" Margin="0,0,4,0" Click="CalculateButtonClick" Background="SpringGreen">Розрахувати</Button>
                     </StackPanel>
                     <DataGrid Grid.Row="1" Name="YearGrowthGrid"
                               RowHeight="75"
@@ -58,6 +61,15 @@
                                 </Setter>
                             </Style>
                         </DataGrid.ColumnHeaderStyle>
+                        <DataGrid.RowStyle>
+                            <Style TargetType="DataGridRow">
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="Transparent" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGrid.RowStyle>
                         <DataGrid.CellStyle>
                             <Style  TargetType="DataGridCell">
                                 <Setter Property="LayoutTransform">
@@ -115,6 +127,15 @@
                             </Setter>
                         </Style>
                     </DataGrid.ColumnHeaderStyle>
+                    <DataGrid.RowStyle>
+                        <Style TargetType="DataGridRow">
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="Transparent" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.RowStyle>
                     <DataGrid.CellStyle>
                         <Style  TargetType="DataGridCell">
                             <Setter Property="LayoutTransform">
@@ -171,6 +192,15 @@
                             </Setter>
                         </Style>
                     </DataGrid.ColumnHeaderStyle>
+                    <DataGrid.RowStyle>
+                        <Style TargetType="DataGridRow">
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="Transparent" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.RowStyle>
                     <DataGrid.CellStyle>
                         <Style  TargetType="DataGridCell">
                             <Setter Property="LayoutTransform">
@@ -227,6 +257,15 @@
                             </Setter>
                         </Style>
                     </DataGrid.ColumnHeaderStyle>
+                    <DataGrid.RowStyle>
+                        <Style TargetType="DataGridRow">
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="Transparent" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.RowStyle>
                     <DataGrid.CellStyle>
                         <Style  TargetType="DataGridCell">
                             <Setter Property="LayoutTransform">
@@ -285,6 +324,15 @@
                             </Setter>
                         </Style>
                     </DataGrid.ColumnHeaderStyle>
+                    <DataGrid.RowStyle>
+                        <Style TargetType="DataGridRow">
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="Transparent" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.RowStyle>
                     <DataGrid.CellStyle>
                         <Style  TargetType="DataGridCell">
                             <Setter Property="LayoutTransform">
@@ -351,6 +399,15 @@
                             </Setter>
                         </Style>
                     </DataGrid.CellStyle>
+                    <DataGrid.RowStyle>
+                        <Style TargetType="DataGridRow">
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="Transparent" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.RowStyle>
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Аналізовані періоди, роки" IsReadOnly="True" Binding="{Binding Year}"/>
                         <DataGridTextColumn Header="Коефіцієнт Спірмана" IsReadOnly="True" Binding="{Binding SpirmanCoef}" />
@@ -375,4 +432,4 @@
 
         
     </Grid>
-</Controls:MetroWindow>
+</Window>
