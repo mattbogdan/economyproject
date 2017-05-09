@@ -163,6 +163,7 @@ namespace CostManagementProject
 
             GenerateCostGraph();
 
+            ExportToExcelButton.IsEnabled = true;
 
             foreach (YearGrowthCriteries year in calcsList)
             {
@@ -269,6 +270,34 @@ namespace CostManagementProject
             // Force evertyhing plotted to be visible
             plotter.FitToView();
             plotter.InvalidateVisual();
+        }
+
+        private void ExportToExcelButtonClick(object sender, RoutedEventArgs e)
+        {
+            var saveDialog = new Microsoft.Win32.SaveFileDialog()
+            {
+                Filter = "Excel Worksheets 2003 (*.xls)|*.xls|,Excel Worksheets 2007 (*.xlsx)|*.xlsx"
+            };
+
+            if (saveDialog.ShowDialog().GetValueOrDefault())
+            {
+                try
+                {
+                    ExcelExporter.Export(new ExcelExportData
+                    {
+                        YearGrowthData = YearStats,
+                        YearGrowthCriteriaData = YearGrowthCriteriaStats,
+                        YearGrowthRateData = YearGrowthRateStats,
+                        FehnerData = FehnerStats,
+                        ScaleRateData = ScaleStats,
+                        YearSpirmanData = YearSpiermanStats
+                    }, saveDialog.FileName);
+                }
+                catch
+                {
+                    MessageBox.Show("Неможливо записати файл, поки він відкритий. Закрийте файл та спробуйте знову");
+                }
+            }
         }
     }
 }
